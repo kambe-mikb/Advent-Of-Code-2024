@@ -17,12 +17,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package main
 
 import (
-	"fmt"
 	"aoc_2024/cmd"
 )
 
 func main() {
-	fmt.Println("Entering main.main()")
 	cmd.Execute()
-	fmt.Println("Exiting main.main()")
 }
