@@ -50,15 +50,17 @@ To run a solution for a given day, Use go run main.go <day99> <part9>`,
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
 		var file io.Reader
-		var err error
+
 		if Test {
 			file = strings.NewReader(testData)
 		} else {
-			file, err = os.Open(inputFile)
+			ifile, err := os.Open(inputFile)
 			if err != nil {
 				fmt.Println(err)
 				return
-			}	
+			}
+			defer ifile.Close()
+			file = bufio.NewReader(ifile)
 		}
 		lines = bufio.NewScanner(file)
 		fmt.Printf("Result is %v\n", solution(lines))
