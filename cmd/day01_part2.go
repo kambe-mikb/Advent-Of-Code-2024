@@ -25,11 +25,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// part1Cmd represents the part1 command
-var day01part1Cmd = &cobra.Command{
-	Use:   "part1",
-	Short: "Part 1 of Advent of Code Day 01",
-	Long: `What is the total distance between your lists?.`,
+func init() {
+	day01Cmd.AddCommand(day01part2Cmd)
+}
+
+// day01part2Cmd represents the part2 command
+var day01part2Cmd = &cobra.Command{
+	Use:   "part2",
+	Short: "Part 2 of Advent of Code Day 01",
+	Long: `What is their similarity score?`,
 	Run: func(cmd *cobra.Command, args []string) {
 		testData = `3   4
  4   3
@@ -37,7 +41,7 @@ var day01part1Cmd = &cobra.Command{
  1   3
  3   9
  3   3`
- 		solution = func(input *bufio.Scanner) (total int) {
+		solution = func(input *bufio.Scanner) (total int) {
  			var list1, list2 []int
  			
  			for input.Scan() {
@@ -50,19 +54,17 @@ var day01part1Cmd = &cobra.Command{
  			sort.Ints(list1)
  			sort.Ints(list2)
 
- 			for index, value1 := range list1 {
- 				if distance := value1 - list2[index]; distance < 0 {
- 					total -= distance
- 				} else {
- 					total += distance
- 				}  
+ 			histogram := make([]int, max(list1[len(list1) - 1], list2[len(list2) - 1]))
+ 			for _, value2 := range list2 {
+ 				histogram[value2 - 1]++
  			}
+ 			
+ 			for _, value1 := range list1 {
+ 				total += value1 * histogram[value1 - 1]
+ 			}
+
  			return total
- 		}
+		}
 	},
 	PostRun: day01Cmd.Run,
-}
-
-func init() {
-	day01Cmd.AddCommand(day01part1Cmd)
 }
