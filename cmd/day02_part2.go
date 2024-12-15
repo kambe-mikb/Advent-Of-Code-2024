@@ -18,11 +18,11 @@ package cmd
 
 import (
 	"bufio"
-// 	"fmt"
+	// 	"fmt"
 	"slices"
 	"strconv"
 	"strings"
-	
+
 	"github.com/spf13/cobra"
 )
 
@@ -34,38 +34,38 @@ func reportIsSafe(fields []string) (safe bool) {
 	var isIncreasing bool
 
 	reports := make([]int, len(fields))
-    line:
-		for index, value := range fields {
-			reports[index], _ = strconv.Atoi(value)
-			switch index {
-			case 0:
-				safe = true
-			case 1:
-				comparison := reports[index] - reports[index - 1]
-                     safe = ((comparison != 0) && (comparison >= -3) && (comparison <= 3))
-				if (!safe) {
-					break line
-				}
-				isIncreasing = (comparison > 0)
-			default:
-				comparison := reports[index] - reports[index - 1]
-                     safe = (comparison != 0)
-				if (!safe) {
-					break line
-				}
-				// Using a switch, rather than if-then-else for readability
-				switch {
-				case (isIncreasing && (comparison > 0) && (comparison <= 3)):
-					safe = true
-				case ((!isIncreasing) && (comparison < 0) && (comparison >= -3)):
-					safe = true
-				default:
-					safe = false
-					break line
-				}
-				isIncreasing = (comparison > 0)
+line:
+	for index, value := range fields {
+		reports[index], _ = strconv.Atoi(value)
+		switch index {
+		case 0:
+			safe = true
+		case 1:
+			comparison := reports[index] - reports[index-1]
+			safe = ((comparison != 0) && (comparison >= -3) && (comparison <= 3))
+			if !safe {
+				break line
 			}
+			isIncreasing = (comparison > 0)
+		default:
+			comparison := reports[index] - reports[index-1]
+			safe = (comparison != 0)
+			if !safe {
+				break line
+			}
+			// Using a switch, rather than if-then-else for readability
+			switch {
+			case (isIncreasing && (comparison > 0) && (comparison <= 3)):
+				safe = true
+			case ((!isIncreasing) && (comparison < 0) && (comparison >= -3)):
+				safe = true
+			default:
+				safe = false
+				break line
+			}
+			isIncreasing = (comparison > 0)
 		}
+	}
 	return safe
 }
 
@@ -73,7 +73,7 @@ func reportIsSafe(fields []string) (safe bool) {
 var day02part2Cmd = &cobra.Command{
 	Use:   "part2",
 	Short: "Part 2 of Advent of Code Day 02",
-	Long: `What is their similarity score?`,
+	Long:  `What is their similarity score?`,
 	Run: func(cmd *cobra.Command, args []string) {
 		testData = `7 6 4 2 1
 1 2 7 8 9
@@ -83,28 +83,28 @@ var day02part2Cmd = &cobra.Command{
 1 3 6 7 9
 `
 		solution = func(input *bufio.Scanner) (total int) {
- 			for input.Scan() {
- 				fields := strings.Fields(input.Text())
-                if len(fields) == 0 {
-                    break
-                }
-                if reportIsSafe(fields) {
-                	total++
-                } else {
-                	for index := range fields {
-                		dampened := slices.Delete(slices.Clone(fields), index, index + 1)
-                		if len(dampened) == 0 {
-                			break
-                		}
-                		if reportIsSafe(dampened) {
-                			total++
-                			break
-                		}
-                	}
-                }
-            }
-            return total
-        }
+			for input.Scan() {
+				fields := strings.Fields(input.Text())
+				if len(fields) == 0 {
+					break
+				}
+				if reportIsSafe(fields) {
+					total++
+				} else {
+					for index := range fields {
+						dampened := slices.Delete(slices.Clone(fields), index, index+1)
+						if len(dampened) == 0 {
+							break
+						}
+						if reportIsSafe(dampened) {
+							total++
+							break
+						}
+					}
+				}
+			}
+			return total
+		}
 
 	},
 	PostRun: day02Cmd.Run,

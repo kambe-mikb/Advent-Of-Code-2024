@@ -21,7 +21,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	
+
 	"github.com/spf13/cobra"
 )
 
@@ -33,7 +33,7 @@ func init() {
 var day01part2Cmd = &cobra.Command{
 	Use:   "part2",
 	Short: "Part 2 of Advent of Code Day 01",
-	Long: `What is their similarity score?`,
+	Long:  `What is their similarity score?`,
 	Run: func(cmd *cobra.Command, args []string) {
 		testData = `3   4
  4   3
@@ -42,28 +42,28 @@ var day01part2Cmd = &cobra.Command{
  3   9
  3   3`
 		solution = func(input *bufio.Scanner) (total int) {
- 			var list1, list2 []int
- 			
- 			for input.Scan() {
- 				fields := strings.Fields(input.Text())
- 				value, _ := strconv.Atoi(fields[0])
- 				list1 = append(list1, value)
- 				value, _ = strconv.Atoi(fields[1])
- 				list2 = append(list2, value)
- 			}
- 			sort.Ints(list1)
- 			sort.Ints(list2)
+			var list1, list2 []int
 
- 			histogram := make([]int, max(list1[len(list1) - 1], list2[len(list2) - 1]))
- 			for _, value2 := range list2 {
- 				histogram[value2 - 1]++
- 			}
- 			
- 			for _, value1 := range list1 {
- 				total += value1 * histogram[value1 - 1]
- 			}
+			for input.Scan() {
+				fields := strings.Fields(input.Text())
+				value, _ := strconv.Atoi(fields[0])
+				list1 = append(list1, value)
+				value, _ = strconv.Atoi(fields[1])
+				list2 = append(list2, value)
+			}
+			sort.Ints(list1)
+			sort.Ints(list2)
 
- 			return total
+			histogram := make([]int, max(list1[len(list1)-1], list2[len(list2)-1]))
+			for _, value2 := range list2 {
+				histogram[value2-1]++
+			}
+
+			for _, value1 := range list1 {
+				total += value1 * histogram[value1-1]
+			}
+
+			return total
 		}
 	},
 	PostRun: day01Cmd.Run,

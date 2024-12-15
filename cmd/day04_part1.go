@@ -18,9 +18,9 @@ package cmd
 
 import (
 	"bufio"
-//    "fmt"
-    "strings"
-	
+	//    "fmt"
+	"strings"
+
 	"github.com/spf13/cobra"
 )
 
@@ -32,7 +32,7 @@ func init() {
 var day04part1Cmd = &cobra.Command{
 	Use:   "part1",
 	Short: "Part 1 of Advent of Code Day 04",
-	Long: `How many times does XMAS appear?`,
+	Long:  `How many times does XMAS appear?`,
 	Run: func(cmd *cobra.Command, args []string) {
 		testData = `MMMSXXMASM
 MSAMXMSMSA
@@ -45,62 +45,62 @@ SAXAMASAAA
 MAMMMXMMMM
 MXMXAXMASX`
 		solution = func(input *bufio.Scanner) (total int) {
-            var rows []string
-            
- 			for input.Scan() {
-                rows = append(rows, strings.TrimRight(input.Text(), "\r\n"))
- 			}
-            rowMax := len(rows) - 1
-            
-            for rIndex, row := range rows {
-                columnMax := len(row) - 1
-                
-                for cIndex, letter := range row {
-                    var rSearch []int
-                    var cSearch []int
-                    
-                    if (string(letter) != "X") {
-                        continue
-                    }
-                    
-                    switch rIndex {
-                    case 0:
-                        rSearch = []int{0, 1}
-                    case rowMax:
-                        rSearch = []int{rIndex - 1, rIndex}
-                    default:
-                        rSearch = []int{rIndex - 1, rIndex, rIndex + 1}
-                    }
+			var rows []string
 
-                    switch cIndex {
-                    case 0:
-                        cSearch = []int{0, 1}
-                    case rowMax:
-                        cSearch = []int{cIndex - 1, cIndex}
-                    default:
-                        cSearch = []int{cIndex - 1, cIndex, cIndex + 1}
-                    }
+			for input.Scan() {
+				rows = append(rows, strings.TrimRight(input.Text(), "\r\n"))
+			}
+			rowMax := len(rows) - 1
 
-                    for _, r := range rSearch {
-                        for _, c := range cSearch {
-                            if (string(rows[r][c]) != "M") || ((rIndex > 0) && (r == 0)) || ((rIndex < rowMax) && (r == rowMax)) || ((cIndex >  0) && (c == 0)) || ((cIndex < columnMax) && (c == columnMax)) {
-                                continue
-                            }
-                            newr := r + (r - rIndex)
-                            newc := c + (c - cIndex)
-                            if (string(rows[newr][newc]) != "A") || ((r >0) && (newr == 0)) || ((r < rowMax) && (newr == rowMax)) || ((c > 0) && (newc == 0)) || ((c < columnMax) && (newc == columnMax)) {
-                                continue
-                            }
-                            if (string(rows[newr + (r - rIndex)][newc + (c - cIndex)]) == "S") {
-                                total++
-                            }
-                        }
-                    }
-                }
-            }
+			for rIndex, row := range rows {
+				columnMax := len(row) - 1
 
- 			return total
- 		}
+				for cIndex, letter := range row {
+					var rSearch []int
+					var cSearch []int
+
+					if string(letter) != "X" {
+						continue
+					}
+
+					switch rIndex {
+					case 0:
+						rSearch = []int{0, 1}
+					case rowMax:
+						rSearch = []int{rIndex - 1, rIndex}
+					default:
+						rSearch = []int{rIndex - 1, rIndex, rIndex + 1}
+					}
+
+					switch cIndex {
+					case 0:
+						cSearch = []int{0, 1}
+					case rowMax:
+						cSearch = []int{cIndex - 1, cIndex}
+					default:
+						cSearch = []int{cIndex - 1, cIndex, cIndex + 1}
+					}
+
+					for _, r := range rSearch {
+						for _, c := range cSearch {
+							if (string(rows[r][c]) != "M") || ((rIndex > 0) && (r == 0)) || ((rIndex < rowMax) && (r == rowMax)) || ((cIndex > 0) && (c == 0)) || ((cIndex < columnMax) && (c == columnMax)) {
+								continue
+							}
+							newr := r + (r - rIndex)
+							newc := c + (c - cIndex)
+							if (string(rows[newr][newc]) != "A") || ((r > 0) && (newr == 0)) || ((r < rowMax) && (newr == rowMax)) || ((c > 0) && (newc == 0)) || ((c < columnMax) && (newc == columnMax)) {
+								continue
+							}
+							if string(rows[newr+(r-rIndex)][newc+(c-cIndex)]) == "S" {
+								total++
+							}
+						}
+					}
+				}
+			}
+
+			return total
+		}
 	},
 	PostRun: day04Cmd.Run,
 }

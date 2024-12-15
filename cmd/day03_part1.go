@@ -18,9 +18,9 @@ package cmd
 
 import (
 	"bufio"
-    "regexp"
-    "strconv"
-	
+	"regexp"
+	"strconv"
+
 	"github.com/spf13/cobra"
 )
 
@@ -32,23 +32,23 @@ func init() {
 var day03part1Cmd = &cobra.Command{
 	Use:   "part1",
 	Short: "Part 1 of Advent of Code Day 03",
-	Long: `What do you get if you add up all of the results of the multiplications?`,
+	Long:  `What do you get if you add up all of the results of the multiplications?`,
 	Run: func(cmd *cobra.Command, args []string) {
 		testData = `xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))
 `
 		solution = func(input *bufio.Scanner) (total int) {
-            mulRe := regexp.MustCompile(`mul\((\d{1,3}),(\d{1,3})\)`)
- 			for input.Scan() {
-                mulExprs := mulRe.FindAllStringSubmatch(input.Text(), -1)
-                for _, operation := range mulExprs {
-                    leftOperand, _ := strconv.Atoi(operation[1])
-                    rightOperand, _ := strconv.Atoi(operation[2])
-                    total += leftOperand * rightOperand
-                }
- 			}
+			mulRe := regexp.MustCompile(`mul\((\d{1,3}),(\d{1,3})\)`)
+			for input.Scan() {
+				mulExprs := mulRe.FindAllStringSubmatch(input.Text(), -1)
+				for _, operation := range mulExprs {
+					leftOperand, _ := strconv.Atoi(operation[1])
+					rightOperand, _ := strconv.Atoi(operation[2])
+					total += leftOperand * rightOperand
+				}
+			}
 
- 			return total
- 		}
+			return total
+		}
 	},
 	PostRun: day03Cmd.Run,
 }

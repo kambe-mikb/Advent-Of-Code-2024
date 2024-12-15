@@ -19,7 +19,7 @@ package cmd
 import (
 	"bufio"
 	"strings"
-	
+
 	"github.com/spf13/cobra"
 )
 
@@ -31,7 +31,7 @@ func init() {
 var day04part2Cmd = &cobra.Command{
 	Use:   "part2",
 	Short: "Part 2 of Advent of Code Day 04",
-	Long: ``,
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		testData = `MMMSXXMASM
 MSAMXMSMSA
@@ -44,51 +44,51 @@ SAXAMASAAA
 MAMMMXMMMM
 MXMXAXMAS`
 		solution = func(input *bufio.Scanner) (total int) {
-            var rows []string
-            
- 			for input.Scan() {
-                rows = append(rows, strings.TrimRight(input.Text(), "\r\n"))
- 			}
-            rowMax := len(rows) - 1
-            
-            for rIndex, row := range rows {
-                columnMax := len(row) - 1
-                row:
-                    for cIndex, letter := range row {
-                        if (string(letter) != "A") {
-                            continue
-                        }
-                        
-                        if (rIndex == 0) || (rIndex == rowMax) || (cIndex == 0) || (cIndex == columnMax) {
-                        	continue
-                        }
-                        cSearch := [2]int{cIndex - 1, cIndex + 1}
-                        
-                        valid := 0
-                    	for _, c := range cSearch {
-                    		var expectedLetter string
-                    		
-                    		switch string(rows[rIndex - 1][c]) {
-                    		case "M":
-                    			expectedLetter = "S"
-                			case "S":
-                				expectedLetter = "M"
-            				default:
-            					continue row
-                    		}
-                    		
-                    		if (string(rows[rIndex + 1][cIndex + (cIndex - c)]) == expectedLetter) {
-                    			valid++
-                    		} 
-                    	}
-                        if valid >= 2 {
-                            total++
-                        }
-                }
+			var rows []string
+
+			for input.Scan() {
+				rows = append(rows, strings.TrimRight(input.Text(), "\r\n"))
+			}
+			rowMax := len(rows) - 1
+
+			for rIndex, row := range rows {
+				columnMax := len(row) - 1
+			row:
+				for cIndex, letter := range row {
+					if string(letter) != "A" {
+						continue
+					}
+
+					if (rIndex == 0) || (rIndex == rowMax) || (cIndex == 0) || (cIndex == columnMax) {
+						continue
+					}
+					cSearch := [2]int{cIndex - 1, cIndex + 1}
+
+					valid := 0
+					for _, c := range cSearch {
+						var expectedLetter string
+
+						switch string(rows[rIndex-1][c]) {
+						case "M":
+							expectedLetter = "S"
+						case "S":
+							expectedLetter = "M"
+						default:
+							continue row
+						}
+
+						if string(rows[rIndex+1][cIndex+(cIndex-c)]) == expectedLetter {
+							valid++
+						}
+					}
+					if valid >= 2 {
+						total++
+					}
+				}
 			}
 
- 			return total
- 		}
+			return total
+		}
 	},
 	PostRun: day04Cmd.Run,
 }

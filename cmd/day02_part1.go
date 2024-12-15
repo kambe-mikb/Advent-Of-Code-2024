@@ -20,7 +20,7 @@ import (
 	"bufio"
 	"strconv"
 	"strings"
-	
+
 	"github.com/spf13/cobra"
 )
 
@@ -32,7 +32,7 @@ func init() {
 var day02part1Cmd = &cobra.Command{
 	Use:   "part1",
 	Short: "Part 1 of Advent of Code Day 02",
-	Long: `What is their similarity score?`,
+	Long:  `What is their similarity score?`,
 	Run: func(cmd *cobra.Command, args []string) {
 		testData = `7 6 4 2 1
 1 2 7 8 9
@@ -43,54 +43,54 @@ var day02part1Cmd = &cobra.Command{
 
 `
 		solution = func(input *bufio.Scanner) (total int) {
- 			for input.Scan() {
- 				var safe bool
- 				var isIncreasing bool
+			for input.Scan() {
+				var safe bool
+				var isIncreasing bool
 
- 				fields := strings.Fields(input.Text())
-                if len(fields) == 0 {
-                    break
-                }
- 				reports := make([]int, len(fields))
-                line:
-     				for index, value := range fields {
-    	 				reports[index], _ = strconv.Atoi(value)
-    	 				switch index {
-    	 				case 0:
-    	 					safe = true
-    	 				case 1:
-    		 				comparison := reports[index] - reports[index - 1]
-                            safe = ((comparison != 0) && (comparison >= -3) && (comparison <= 3))
-    	 					if (!safe) {
-    	 						break line
-    	 					}
-    	 					isIncreasing = (comparison > 0)
-    	 				default:
-    		 				comparison := reports[index] - reports[index - 1]
-                            safe = (comparison != 0)
-    	 					if (!safe) {
-    	 						break line
-    	 					}
-    	 					// Using a switch, rather than if-then-else for readability
-     						switch {
-     						case (isIncreasing && (comparison > 0) && (comparison <= 3)):
-     							safe = true
-     						case ((!isIncreasing) && (comparison < 0) && (comparison >= -3)):
-     							safe = true
-     						default:
-     							safe = false
-     							break line
-     						}
-     						isIncreasing = (comparison > 0)
-    	 				}
-     				}
- 				if safe {
- 					total++
- 				}
- 			}
+				fields := strings.Fields(input.Text())
+				if len(fields) == 0 {
+					break
+				}
+				reports := make([]int, len(fields))
+			line:
+				for index, value := range fields {
+					reports[index], _ = strconv.Atoi(value)
+					switch index {
+					case 0:
+						safe = true
+					case 1:
+						comparison := reports[index] - reports[index-1]
+						safe = ((comparison != 0) && (comparison >= -3) && (comparison <= 3))
+						if !safe {
+							break line
+						}
+						isIncreasing = (comparison > 0)
+					default:
+						comparison := reports[index] - reports[index-1]
+						safe = (comparison != 0)
+						if !safe {
+							break line
+						}
+						// Using a switch, rather than if-then-else for readability
+						switch {
+						case (isIncreasing && (comparison > 0) && (comparison <= 3)):
+							safe = true
+						case ((!isIncreasing) && (comparison < 0) && (comparison >= -3)):
+							safe = true
+						default:
+							safe = false
+							break line
+						}
+						isIncreasing = (comparison > 0)
+					}
+				}
+				if safe {
+					total++
+				}
+			}
 
- 			return total
- 		}
+			return total
+		}
 	},
 	PostRun: day02Cmd.Run,
 }
