@@ -88,5 +88,3 @@ func init() {
 	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.PersistentFlags().BoolVarP(&Test, "test", "t", false, "Use Test Input")
 }
-
-

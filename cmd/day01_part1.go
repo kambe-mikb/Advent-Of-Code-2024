@@ -21,7 +21,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	
+
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +29,7 @@ import (
 var day01part1Cmd = &cobra.Command{
 	Use:   "part1",
 	Short: "Part 1 of Advent of Code Day 01",
-	Long: `What is the total distance between your lists?.`,
+	Long:  `What is the total distance between your lists?.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		testData = `3   4
  4   3
@@ -37,28 +37,28 @@ var day01part1Cmd = &cobra.Command{
  1   3
  3   9
  3   3`
- 		solution = func(input *bufio.Scanner) (total int) {
- 			var list1, list2 []int
- 			
- 			for input.Scan() {
- 				fields := strings.Fields(input.Text())
- 				value, _ := strconv.Atoi(fields[0])
- 				list1 = append(list1, value)
- 				value, _ = strconv.Atoi(fields[1])
- 				list2 = append(list2, value)
- 			}
- 			sort.Ints(list1)
- 			sort.Ints(list2)
+		solution = func(input *bufio.Scanner) (total int) {
+			var list1, list2 []int
 
- 			for index, value1 := range list1 {
- 				if distance := value1 - list2[index]; distance < 0 {
- 					total -= distance
- 				} else {
- 					total += distance
- 				}  
- 			}
- 			return total
- 		}
+			for input.Scan() {
+				fields := strings.Fields(input.Text())
+				value, _ := strconv.Atoi(fields[0])
+				list1 = append(list1, value)
+				value, _ = strconv.Atoi(fields[1])
+				list2 = append(list2, value)
+			}
+			sort.Ints(list1)
+			sort.Ints(list2)
+
+			for index, value1 := range list1 {
+				if distance := value1 - list2[index]; distance < 0 {
+					total -= distance
+				} else {
+					total += distance
+				}
+			}
+			return total
+		}
 	},
 	PostRun: day01Cmd.Run,
 }
