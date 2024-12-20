@@ -29,6 +29,8 @@ import (
 // The following variables are used in every solution
 var Test bool
 
+var Debug bool
+
 var inputFile string
 
 var testData string
@@ -36,6 +38,12 @@ var testData string
 var lines *bufio.Scanner
 
 var solution func(*bufio.Scanner) int
+
+func debugln(message ...any) {
+	if Debug {
+		fmt.Println(message)
+	}
+}
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -87,4 +95,5 @@ func init() {
 	// when this action is called directly.
 	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.PersistentFlags().BoolVarP(&Test, "test", "t", false, "Use Test Input")
+	rootCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "Print Debug Messages to Console")
 }
