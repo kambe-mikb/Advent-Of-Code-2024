@@ -36,7 +36,7 @@ func makeNewMap(curMap [][]bool, curGuard [3]int) (newMap [][]bool, newSeen [][]
 		newSeen = append(newSeen, make([]int, len(rv)))
 	}
 	newGuard = curGuard
-    return
+	return
 }
 
 // day06part2Cmd represents the part2 command
@@ -84,29 +84,29 @@ var day06part2Cmd = &cobra.Command{
 					}
 				}
 			}
-            curMap, seen, guard := makeNewMap(startingMap, startingGuard)
-            for ri, rv := range curMap {
-                for ci, cv := range rv {
-                    if cv { // there's already an obstacle'
-                        continue
-                    }
-                    curMap[ri][ci] = true // add an obstacle
-                    seen[guard[0]][guard[1]] = guard[2] + 1
-                    for off, guard, _ := step(curMap, guard); !off; off, guard, _ = step(curMap, guard) {
-                        if seen[guard[0]][guard[1]] == 0 {
-                            seen[guard[0]][guard[1]] = guard[2] + 1
-                        } else {
-                            if seen[guard[0]][guard[1]] == guard[2] + 1 {
-                                fmt.Println("! Loop found with new obstacle at", ri, ",", ci)
-                                // we've already been to this loc on this vector'
-                                total++
-                                break
-                            }
-                        }
-                    }
-                    curMap, seen, guard = makeNewMap(startingMap, startingGuard)                    
-                }
-            } 
+			curMap, seen, guard := makeNewMap(startingMap, startingGuard)
+			for ri, rv := range curMap {
+				for ci, cv := range rv {
+					if cv { // there's already an obstacle'
+						continue
+					}
+					curMap[ri][ci] = true // add an obstacle
+					seen[guard[0]][guard[1]] = guard[2] + 1
+					for off, guard, _ := step(curMap, guard); !off; off, guard, _ = step(curMap, guard) {
+						if seen[guard[0]][guard[1]] == 0 {
+							seen[guard[0]][guard[1]] = guard[2] + 1
+						} else {
+							if seen[guard[0]][guard[1]] == guard[2]+1 {
+								fmt.Println("! Loop found with new obstacle at", ri, ",", ci)
+								// we've already been to this loc on this vector'
+								total++
+								break
+							}
+						}
+					}
+					curMap, seen, guard = makeNewMap(startingMap, startingGuard)
+				}
+			}
 			return total
 		}
 	},

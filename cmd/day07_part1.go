@@ -85,7 +85,6 @@ var day07part1Cmd = &cobra.Command{
 						break
 					}
 				}
-
 			}
 			return total
 		}

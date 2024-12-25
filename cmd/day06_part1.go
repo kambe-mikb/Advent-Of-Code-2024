@@ -18,7 +18,7 @@ package cmd
 
 import (
 	"bufio"
-    //	"fmt"
+	//	"fmt"
 	//	"slices"
 	//	"strconv"
 	"strings"
@@ -30,46 +30,46 @@ func init() {
 	day06Cmd.AddCommand(day06part1Cmd)
 }
 
-var directions = [4]string{"^", ">", "v", "<"}
+// var directions = [4]string{"^", ">", "v", "<"}
 
 func step(obstacle [][]bool, theGuard [3]int) (bool, [3]int, int) {
-    var r int
-    var c int
-    
-    switch theGuard[2] {
-    case 0:
-        if theGuard[0] == 0 {
-            return true, theGuard, 0
-        }
-        r = theGuard[0] - 1
-        c = theGuard[1]
-    case 1:
-        if theGuard[1] == (len(obstacle[theGuard[0]]) - 1) {
-            return true, theGuard, 0
-        }
-        r = theGuard[0]
-        c = theGuard[1] + 1
-    case 2:
-        if theGuard[0] == (len(obstacle) - 1){
-            return true, theGuard, 0
-        }
-        r = theGuard[0] + 1
-        c = theGuard[1]
-    case 3:
-        if theGuard[1] == 0 {
-            return true, theGuard, 0
-        }
-        r = theGuard[0]
-        c = theGuard[1] - 1
-    }
-    if obstacle[r][c] {
-        theGuard[2] = (theGuard[2] + 1) % 4
-        return false, theGuard, 0 //step(obstacle, theGuard)
-    } else {
-        theGuard[0] = r
-        theGuard[1] = c
-        return false, theGuard, 1
-    }
+	var r int
+	var c int
+
+	switch theGuard[2] {
+	case 0:
+		if theGuard[0] == 0 {
+			return true, theGuard, 0
+		}
+		r = theGuard[0] - 1
+		c = theGuard[1]
+	case 1:
+		if theGuard[1] == (len(obstacle[theGuard[0]]) - 1) {
+			return true, theGuard, 0
+		}
+		r = theGuard[0]
+		c = theGuard[1] + 1
+	case 2:
+		if theGuard[0] == (len(obstacle) - 1) {
+			return true, theGuard, 0
+		}
+		r = theGuard[0] + 1
+		c = theGuard[1]
+	case 3:
+		if theGuard[1] == 0 {
+			return true, theGuard, 0
+		}
+		r = theGuard[0]
+		c = theGuard[1] - 1
+	}
+	if obstacle[r][c] {
+		theGuard[2] = (theGuard[2] + 1) % 4
+		return false, theGuard, 0 //step(obstacle, theGuard)
+	} else {
+		theGuard[0] = r
+		theGuard[1] = c
+		return false, theGuard, 1
+	}
 }
 
 // day06part1Cmd represents the part1 command
@@ -90,44 +90,44 @@ var day06part1Cmd = &cobra.Command{
 #.........
 ......#...`
 		solution = func(input *bufio.Scanner) (total int) {
-            var startingMap [][]bool
-            var guard [3]int
-            var seen [][]bool
-            var row int
-            
-			for ;input.Scan(); row++  {
-                line := strings.TrimRight(input.Text(), "\r\n")
-                startingMap = append(startingMap, make([]bool, len(line)))
-                seen = append(seen, make([]bool, len(line)))
-                for column, letter := range line {
-                    switch string(letter) {
-                    case "#":
-                        startingMap[row][column] = true
-                    case "^":
-                        startingMap[row][column] = false
-                        guard = [3]int {row, column, 0}
-                    case ">":
-                        startingMap[row][column] = false
-                        guard = [3]int {row, column, 1}
-                    case "v":
-                        startingMap[row][column] = false
-                        guard = [3]int {row, column, 2}
-                    case "<":
-                        startingMap[row][column] = false
-                        guard = [3]int {row, column, 3}
-                    default:
-                        startingMap[row][column] = false
-                    }
-                }
+			var startingMap [][]bool
+			var guard [3]int
+			var seen [][]bool
+			var row int
+
+			for ; input.Scan(); row++ {
+				line := strings.TrimRight(input.Text(), "\r\n")
+				startingMap = append(startingMap, make([]bool, len(line)))
+				seen = append(seen, make([]bool, len(line)))
+				for column, letter := range line {
+					switch string(letter) {
+					case "#":
+						startingMap[row][column] = true
+					case "^":
+						startingMap[row][column] = false
+						guard = [3]int{row, column, 0}
+					case ">":
+						startingMap[row][column] = false
+						guard = [3]int{row, column, 1}
+					case "v":
+						startingMap[row][column] = false
+						guard = [3]int{row, column, 2}
+					case "<":
+						startingMap[row][column] = false
+						guard = [3]int{row, column, 3}
+					default:
+						startingMap[row][column] = false
+					}
+				}
 			}
-            seen[guard[0]][guard[1]] = true
-            total = 1
-            for off, guard, n := step(startingMap, guard); !off; off, guard, n = step(startingMap, guard) {
-                if !seen[guard[0]][guard[1]] {
-                    total += n
-                    seen[guard[0]][guard[1]] = true
-                }
-            }
+			seen[guard[0]][guard[1]] = true
+			total = 1
+			for off, guard, n := step(startingMap, guard); !off; off, guard, n = step(startingMap, guard) {
+				if !seen[guard[0]][guard[1]] {
+					total += n
+					seen[guard[0]][guard[1]] = true
+				}
+			}
 			return total
 		}
 	},
