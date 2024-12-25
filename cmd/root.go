@@ -41,7 +41,7 @@ var solution func(*bufio.Scanner) int
 
 func debugln(message ...any) {
 	if Debug {
-		fmt.Println(message)
+		fmt.Println(message...)
 	}
 }
 
@@ -54,8 +54,6 @@ This year I have decided to implement the solutions in Go.
 
 To run a solution for a given day, Use go run main.go <day99> <part9>`,
 	TraverseChildren: true,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
 		var file io.Reader
 
@@ -85,15 +83,6 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.aoc_2024.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.PersistentFlags().BoolVarP(&Test, "test", "t", false, "Use Test Input")
 	rootCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "Print Debug Messages to Console")
 }
